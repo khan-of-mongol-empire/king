@@ -9,36 +9,45 @@ import os
 # 1. 구글 드라이브에서 모델 가져오기
 # =========================
 
-# 🔸 구글 드라이브에서 공유한 model.pkl의 파일 ID 넣기
-# 예: https://drive.google.com/file/d/여기123abc아이디/view?usp=sharing
-FILE_ID = "1QPRXxwHljOWE7mOLbwZZtpvBZBpJq4ei"  # 꼭 바꿔줘!!
+FILE_ID = "여기에_넣어"   # 반드시 올바른 ID 넣기
 GDRIVE_URL = f"https://drive.google.com/uc?export=download&id={FILE_ID}"
 
 MODEL_PATH = "model.pkl"
 
-
 def download_model_if_needed():
-    """로컬에 model.pkl 없으면 구글 드라이브에서 한 번 다운로드"""
     if os.path.exists(MODEL_PATH):
         return
-    r = requests.get(GDRIVE_URL)
-    r.raise_for_status()
-    with open(MODEL_PATH, "wb") as f:
-        f.write(r.content)
+    try:
+        r = requests.get(GDRIVE_URL)
+        r.raise_for_status()
+        with open(MODEL_PATH, "wb") as f:
+            f.write(r.content)
+    except Exception as e:
+        st.error(f"모델 다운로드 실패: {e}")
+        raise
 
+def load_pickle_safely(path):
+    try:
+        with open(path, "rb") as f:
+            return pickle.load(f)
+    except Exception:
+        st.error("❌ model.pkl이 손상되었거나 pkl이 아님.\n"
+                 "⚠️ 구글 드라이브 FILE_ID를 다시 확인하거나, pkl을 다시 만들어야 합니다.")
+        raise
 
 try:
     cache_resource = st.cache_resource
-except AttributeError:
+except:
     cache_resource = st.cache
-
 
 @cache_resource
 def load_model():
     download_model_if_needed()
-    with open(MODEL_PATH, "rb") as f:
-        model = pickle.load(f)
-    return model
+    return load_pickle_safely(MODEL_PATH)
+
+# =========================
+# 2. 여기부터 네 app 로직...
+# =========================
 
 
 # =========================
