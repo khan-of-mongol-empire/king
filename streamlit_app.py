@@ -4,7 +4,7 @@ from PIL import Image
 import pickle
 
 # 🔸 모델 파일 이름 (같은 폴더에 넣기)
-MODEL_PATH = "왕분류.pkl"
+MODEL_PATH = "king.pkl"
 
 # 🔸 왕(인물) 정보 — 이미지 2장씩 링크로 넣기
 KING_INFO = {
