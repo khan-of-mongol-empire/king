@@ -9,7 +9,7 @@ import os
 # 1. 구글 드라이브에서 모델 가져오기
 # =========================
 
-FILE_ID = "여기에_넣어"   # 반드시 올바른 ID 넣기
+FILE_ID = "1QPRXxwHljOWE7mOLbwZZtpvBZBpJq4ei"   # 반드시 올바른 ID 넣기
 GDRIVE_URL = f"https://drive.google.com/uc?export=download&id={FILE_ID}"
 
 MODEL_PATH = "model.pkl"
